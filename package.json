@@ -1,0 +1,31 @@
+{
+  "name": "pc-products",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "csv-parser": "^3.0.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "node": "^16.1.0",
+    "nodemon": "^2.0.7",
+    "underscore": "^1.13.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon server/serverIndex.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-Spaghettification/pc-products.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Team-Spaghettification/pc-products/issues"
+  },
+  "homepage": "https://github.com/Team-Spaghettification/pc-products#readme"
+}

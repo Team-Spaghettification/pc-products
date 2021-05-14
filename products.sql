@@ -2,7 +2,7 @@ use sdcproducts;
 
 drop table if exists productsJCTstyles;
 
-/* create table product (
+create table product (
   id int primary key,
   name varchar(500) not null,
   slogan varchar(500) not null,
@@ -30,9 +30,9 @@ create table related (
     references product(id),
   foreign key (related_product_id)
     references product(id)
-); */
+);
 
-/* create table features (
+  create table features (
   id int,
   product_id int,
   feature varchar(50),
@@ -40,26 +40,26 @@ create table related (
   foreign key (product_id)
     references product(id)
 );
- */
-/* create table photos (
+
+create table photos (
   id int,
   style_id int,
   url varchar(2500),
   thumbnail_url varchar(2500),
   foreign key (style_id)
     references styles(id)
-); */
+);
 
-/* create table skus (
+create table skus (
   id int,
   style_id int,
   size varchar(100),
   quantity int,
   foreign key (style_id)
     references styles(id)
-); */
+);
 
-create table productJCTstyles (
+/* create table productJCTstyles (
   id int not null auto_increment,
   product_id int,
   style_id int,
@@ -67,3 +67,4 @@ create table productJCTstyles (
   foreign key (product_id) references product(id),
   foreign key (style_id) references styles(id)
 );
+ */

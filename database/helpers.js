@@ -1,13 +1,9 @@
 const db = require('./databaseIndex.js');
 
-
-
 var getProducts = async (arr) =>{
-
   var low = 0;
   var high = arr[0] || 5;
-  //arr has count and page
-  //set the high and low values for query id
+  //this gives back parameters for the id in query
   if (arr[1] > 1) {
     high = arr[0] * arr[1];
     low = high - arr[0];
@@ -17,15 +13,19 @@ var getProducts = async (arr) =>{
   FROM product
   WHERE id > ${low}
   AND id <= ${high}`;
+
   var data = await db.query(queryString)
   return data;
 }
 
 var getRelated = async (id) => {
+
   var queryString = `SELECT related_product_id
   FROM related
   WHERE current_product_id=${id}`;
+
   var data = await db.query(queryString);
+  console.log(data);
   var arr = [];
   for (var i = 0; i < data.length; i++){
     arr.push(data[i]['related_product_id'])
@@ -34,20 +34,28 @@ var getRelated = async (id) => {
 }
 
 var getProductId = async (id) => {
+
   var queryString = `SELECT *
   FROM product
   WHERE id=${id}`;
+
   var data = await db.query(queryString);
+  for (var i = 0; i < data.length; i++) {
+    console.log(data[i])
+    data[i]['features'] = await getFeatures(data[i].id);
+  }
   return data;
 }
 
 var getStyles = async (id) => {
   var resultObj = {};
+
   var queryString = `SELECT *
   FROM styles
   WHERE product_id = ${id}`;
+
   var data = await db.query(queryString);
-  console.log('data at this point ', data);
+
   for (var i = 0; i < data.length; i++) {
     var digit = data[i].default;
     delete data[i].default;
@@ -58,29 +66,37 @@ var getStyles = async (id) => {
     delete data[i].product_id;
     resultObj['results'] = data;
   }
-  console.log('data after the loop: ', data)
-  console.log('htis is the obj; ', resultObj)
+
   return resultObj;
 }
 
 var getPhotos = async (id) => {
+
   var queryString = `SELECT photos.thumbnail_url, photos.url
   FROM photos
-  JOIN styles
-    ON styles.style_id = photos.style_id
-  WHERE styles.product_id = ${id}`;
+  WHERE photos.style_id = ${id}`;
 
   var data = await db.query(queryString);
   return data;
 }
 
+var getFeatures = async (id) => {
+
+  var queryString = `SELECT features.feature, features.value
+  FROM features
+  WHERE features.product_id = ${id}`;
+
+  var data = await db.query(queryString);
+  return data;
+
+}
+
 var getSkus = async (id) => {
   var dataObj = {};
+
   var queryString = `SELECT skus.id, skus.size, skus.quantity
   FROM skus
-  JOIN styles
-    ON styles.style_id = skus.style_id
-  WHERE styles.product_id = ${id}`;
+  WHERE skus.style_id = ${id}`;
 
   var data  = await db.query(queryString);
   for (var i = 0; i < data.length; i++) {
@@ -100,4 +116,5 @@ module.exports.getRelated = getRelated;
 module.exports.getProductId = getProductId;
 module.exports.getStyles = getStyles;
 module.exports.getPhotos = getPhotos;
-//module.exports.getSkus = getSkus;
+
+
